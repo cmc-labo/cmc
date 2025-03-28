@@ -1,0 +1,190 @@
+.nav-color {
+    background-color: #5f9ea0;
+  }
+  
+  .brand-text {
+    font-size: 26px;
+  }
+
+  .exo-2-logo {
+    font-family: "Exo 2", serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+  }
+  
+  .sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    padding: 90px 0 0;
+    box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.1);
+    z-index: 99;
+  }
+  
+  @media (min-width: 767.98px) {
+    .navbar {
+      top: 0;
+      position: sticky;
+      z-index: 999;
+    }
+  }
+  .navbar {
+    box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+  }
+  
+  .sidebar .nav-link {
+    color: #333;
+  }
+  
+  .sidebar .nav-link.active {
+    color: #0d6efd;
+  }
+  
+  .home .card-header {
+    font-size: 16px;
+  }
+  .home .card-container {
+    display: flex;
+  }
+  .home .card-title {
+    font-size: 30px;
+  }
+  .home .card-market {
+    text-align: right;
+  }
+  .home .card-img {
+    width: 100px;
+    margin: 0 0 0 auto;
+  }
+  .home .btn {
+    background: #f5f5f5;
+    font-size: 14px;
+  }
+  .home .table th {
+    font-size: 12px;
+  }
+  .home .table td {
+    font-size: 10px;
+    word-break: break-all !important;
+  }
+  .home .table td .s_circle {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #800000;
+  }
+  .home .table td .r_circle {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #006400;
+  }
+  
+  .base .btn {
+    background: #5f9ea0;
+    border-color: #ffffff;
+    color: #ffffff;
+  }
+  .base .edit-badge {
+    background: #5f9ea0;
+    border-color: #5f9ea0;
+  }
+  .base .inactive {
+    background: #a9a9a9;
+  }
+  .base .list-group .active {
+    background: #f5f5f5;
+    border-color: #f5f5f5;
+    color: black;
+  }
+  .base .list-group .list-group-item {
+    word-break: break-all !important;
+  }
+  .base .card-market {
+    text-align: right;
+  }
+  .base .card-header {
+    word-break: break-all !important;
+  }
+  .base .form-check-input:checked {
+    background-color: #5f9ea0;
+    border: #5f9ea0;
+  }
+  .base .nft-btn {
+    margin-top: 10px;
+  }
+  .base .form-range {
+    -webkit-appearance: none;
+    appearance: none;
+    outline: 0;
+  }
+  .base .form-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    background: #5f9ea0;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.15);
+  }
+  .base .form-range::-moz-range-thumb {
+    background: #5f9ea0;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.15);
+    border: none;
+  }
+  .base .form-range::-moz-focus-outer {
+    border: 0;
+  }
+  .base .form-range:active::-webkit-slider-thumb {
+    box-shadow: 0px 5px 10px -2px rgba(0, 0, 0, 0.3);
+  }
+  
+  .swap .table th {
+    word-break: break-all !important;
+  }
+  .swap .table td {
+    word-break: break-all !important;
+  }
+  
+  @media (max-width: 767.98px) {
+    .swap .table th {
+      font-size: 10px;
+    }
+    .swap .table td {
+      font-size: 10px;
+    }
+    .flex .list-group {
+      width: 100%;
+      margin-top: 10px;
+      word-break: break-all !important;
+    }
+    .flex .list-group .fw-bold {
+      font-weight: lighter;
+    }
+  }
+  @media (min-width: 767.98px) {
+    .flex {
+      display: flex;
+    }
+    .flex .list-group {
+      width: 100%;
+      margin-left: 10px;
+      padding: 5;
+      word-break: break-all !important;
+    }
+    .flex .list-group .fw-bold {
+      font-weight: lighter;
+    }
+  }
+  .fs-s {
+    font-size: small;
+  }
+  
+  .error-msg {
+    color: #db7093;
+  }

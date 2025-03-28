@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block title %}Crypt Wallet Account Username Change | CMC Wallet{% endblock title %}
+{% block header %}
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vuelidate@0.7.4/dist/validators.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vuelidate@0.7.4/dist/vuelidate.min.js"></script>
+<link href="./css/common.css" rel="stylesheet" type="text/css">
+{% endblock header %}
+{% block content %}
+    <!-- main -->
+    <div class="base" id="app">
+        <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4 main">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/home">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Account Update</li>
+            </ol>
+          </nav>
+          <h1 class="h2">Account Update</h1><br>
+          <form method="POST" action="/account_username_complete" @submit="validateBeforeSubmit">
+          <input type="hidden" name="authenticity_token" value="{{ authenticity_token }}"/>
+          <ul class="list-group">
+            <li class="list-group-item">User Name</li>
+            <li class="list-group-item">
+                <input type="text" class="form-control " name="username" value="{{username}}" id="" v-model="username" @blur="$v.username.$touch()">
+                <div v-if="$v.username.$error">
+                  <span v-if="!$v.username.required" class="fs-s error-msg">This is a required field.</span>
+                  <span v-if="!$v.username.alphaNum" class="fs-s error-msg">Please enter alphanumeric characters only.</span>
+                  <span v-if="!$v.username.minLength" class="fs-s error-msg">Please enter at least 6 characters.</span>
+                  <span v-if="!$v.username.maxLength" class="fs-s error-msg">Please enter less than 20 characters.</span>
+                </div>
+            </li>
+          </ul>
+          <br>
+
+          <ul class="list-group">
+            <li class="list-group-item">Password</li>
+            <li class="list-group-item">********</li>
+          </ul>
+          <br>
+
+          <ul class="list-group">
+            <li class="list-group-item">Node</li>
+            <li class="list-group-item">{% if nodetype == "c" %}Core Node{% else %}Miner Node{% endif %}</li>
+          </ul>
+          <br>
+          <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="Check1" v-model="confirm" @blur="$v.confirm.$touch()">
+            <label class="form-check-label" for="Check1">The input has been confirmed.</label>
+            <div v-if="$v.confirm.$error">
+              <span v-if="!$v.confirm.required" class="fs-s error-msg">Confirmation is a required field.</span>
+            </div>
+          </div>
+          <br>
+
+          <button type="submit" class="btn btn-primary border-0">Update</button>
+          </form>
+        </main>
+        </div>
+{% endblock content %}
+{% block script %}
+<script>
+    Vue.use(window.vuelidate.default);
+    const { required, maxLength, minLength, alphaNum } = window.validators;
+
+    const app = new Vue({
+        el: '#app',
+        data: {
+            username: '{{username}}',
+            confirm: '',
+        },
+        validations: {
+            username: {
+                required,
+                alphaNum,
+                minLength: minLength(6),
+                maxLength: maxLength(20),
+            },
+            confirm: {
+              required,
+            }
+        },
+        methods: {
+            validateBeforeSubmit(e) {
+              this.$v.$touch();
+                if (this.$v.$invalid) {
+                    e.preventDefault();
+                    console.log('validation error');
+                } else {
+                    console.log('submit');
+                }
+            }
+        }
+    });
+ </script>
+{% endblock script %}  

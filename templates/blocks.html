@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Blocks info | CMC Wallet{% endblock title %}
+{% block header %}
+<link href="./css/common.css" rel="stylesheet" type="text/css">
+{% endblock header %}
+{% block content %}
+<!-- main -->
+<div class="home">
+    <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4 main">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/home">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Blocks Info</li>
+        </ol>
+      </nav>
+      <h1 class="h2">Blocks Info</h1><br>
+      <div class="card">
+        <h5 class="card-header">Blocks</h5>
+        <div class="card-body">
+          <table class="table">
+            <thead>
+                <tr>
+                  <th scope="col">Created Time(UTC)</th>
+                  <th scope="col">Block Hash</th>
+                  <th scope="col">Merkle Root Hash</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for item in data %}
+                <tr>
+                  <td>{{item.time}}</td>
+                  <td>{{item.hash}}</td>
+                  <td>{{item.merkle}}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+    </div>
+{% endblock content %}

@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% block title %}NFT Mint | CMC Wallet{% endblock title %}
+{% block header %}
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vuelidate@0.7.4/dist/validators.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vuelidate@0.7.4/dist/vuelidate.min.js"></script>
+<link href="./css/common.css" rel="stylesheet" type="text/css">
+{% endblock header %}
+{% block content %}
+<!-- main -->
+<div class="base" id="app">
+    <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4 main">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/home">Home</a></li>
+            <li class="breadcrumb-item"><a href="/nft">NFTs</a></li>
+            <li class="breadcrumb-item active" aria-current="page">NFT Mint</li>
+        </ol>
+      </nav>
+      <h1 class="h2">NFT Mint</h1><br>
+      <div class="btn-group" role="group" aria-label="">
+        <button type="button" class="btn">NFTs</button>
+        <button type="button" class="btn inactive">NFT Transfer</button>
+        <button type="button" class="btn inactive">NFT Mint</button>
+      </div>
+      <br>
+      {% if aws_credential == false %}
+      <br>
+      <span class="fs-s error-msg">The .env file does not contain the AWS credential information required to upload the NFT image to AWS S3, so it cannot be sent. To send it, please set AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_BUCKET_NAME, and AWS_REGION in the .env file, and then set s3:GetObject to allow in the S3 bucket policy.</span><br>
+      {% endif %}
+      <br>
+      <form action="/nft_withdrawal_complete" method="post" enctype="multipart/form-data" @submit="validateBeforeSubmit">
+        <input type="hidden" name="authenticity_token" value="{{ authenticity_token }}"/>
+        <div class="mb-3">
+          <label for="withdrawal_address" class="form-label">Receipient Address</label>
+          <input type="text" class="form-control" id="withdrawal_address" name="receiver" v-model="address" @blur="$v.address.$touch()">
+          <div v-if="$v.address.$error">
+            <span v-if="!$v.address.required" class="fs-s error-msg">This is a required field.</span>
+            <span v-if="!$v.address.alphaNum" class="fs-s error-msg">The address format is incorrect. Please enter a valid wallet address.</span>
+            <span v-if="!$v.address.minLength" class="fs-s error-msg">The address format is incorrect. Please enter a valid wallet address.</span>
+            <span v-if="!$v.address.maxLength" class="fs-s error-msg">The address format is incorrect. Please enter a valid wallet address.</span>
+          </div>
+          <div id="withdrawal_addres" class="form-text">Please double-check to make sure there are no input errors.</div>
+        </div>
+        <div class="mb-3">
+            <label for="formFile" class="form-label">NFT file input</label>
+            <input class="form-control" type="file" id="formFile" onchange="previewFile(this);" @blur="$v.file.$touch()" name="nftFile" v-model="nftFile" @change="validate_uploads">
+            <div v-if="$v.nftFile.$error">
+              <span v-if="!$v.nftFile.required" class="fs-s error-msg">This is a required field.</span>
+              <span v-if="!$v.nftFile.file_size_validation" class="fs-s error-msg">error.</span>
+            </div>
+        </div>
+        <img id="preview">
+        <br><br>
+        <div class="mb-3 form-check">
+          <input type="checkbox" class="form-check-input" id="Check1" v-model="confirm" @blur="$v.confirm.$touch()">
+          <label class="form-check-label" for="Check1">The recepient and file has been confirmed.</label>
+          <div v-if="$v.confirm.$error">
+            <span v-if="!$v.confirm.required" class="fs-s error-msg">Confirmation is a required field.</span>
+          </div>
+        </div>
+        {% if aws_credential == true %}
+        <button type="submit" class="btn btn-primary border-0">Create NFT</button>
+        {% else %}
+        <button type="submit" class="btn btn-primary border-0" disabled>Create NFT</button>
+        {% endif %}
+      </form>
+    </main>
+    </div>
+{% endblock content %}
+{% block script %}
+<script>
+    Vue.use(window.vuelidate.default);
+    const { required, maxLength, minLength, alphaNum, numeric } = window.validators;
+
+    const app = new Vue({
+        el: '#app',
+        data: {
+            address: '',
+            nftFile: '',
+            confirm: '',
+        },
+        validations: {
+            address: {
+                required,
+                alphaNum,
+                minLength: minLength(33),
+                maxLength: maxLength(34),
+            },
+            nftFile: {
+                required,
+            },
+            confirm: {
+              required,
+            }
+        },
+        methods: {
+          validate_uploads: function (event) {
+              let file = event.target.files[0],
+              name = file.name,
+              size = file.size,
+              type = file.type,
+              errors = ''
+
+              if (size > 3000000) {
+                errors += 'The file size exceeds the maximum limit of 3MB.\n'
+              }
+              if (type != 'image/jpeg' && type != 'image/gif' && type != 'image/png' && type != 'application/pdf') {
+                errors += 'Only .jpg, .gif, .png, or .pdf files are allowed.\n'
+              }
+              if (errors) {
+                alert(errors)
+                event.currentTarget.value = ''
+              }
+            },
+            validateBeforeSubmit(e) {
+              this.$v.$touch();
+                if (this.$v.$invalid) {
+                    e.preventDefault();
+                    console.log('validation error');
+                } else {
+                    console.log('submit');
+                }
+            }
+        }
+    });
+  </script>
+  <script>
+      function previewFile(file) {
+          if (file.files[0].size < 3000000) {
+            var fileData = new FileReader();
+            fileData.onload = (function() {
+                document.getElementById('preview').setAttribute("style","width:150px;height:150px");
+                document.getElementById('preview').src = fileData.result;
+                
+            });
+            fileData.readAsDataURL(file.files[0]);
+          }
+      }
+  </script>
+{% endblock script %}  

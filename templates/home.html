@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block title %}Home | CMC Wallet{% endblock title %}
+{% block header %}
+<link href="./css/common.css" rel="stylesheet" type="text/css">
+{% endblock header %}
+{% block content %}
+ <!-- main -->
+    <div class="home">
+    <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4 main">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/home">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Overview</li>
+        </ol>
+      </nav>
+      <h1 class="h2">Dashboard</h1><br>
+      <div class="card">
+        <h5 class="card-header">Total Balance</h5>
+        <div class="card-body">
+          <div class="card-container">
+          <div class="card-text">
+            <h5 class="card-title">{{balance | round(method="ceil", precision=2)}}.00 cmc</h5><br>
+            <a href="/withdrawal" class="btn">Send</a>
+          </div>
+          <div class="card-img">
+            <img width="100" height="100" src="./img/qrcode.png" alt="" /></a>
+          </div>
+          </div>
+        </div>
+      </div>
+      <br>
+      <div class="card">
+        <h5 class="card-header">Blocks</h5>
+        <div class="card-body">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Created Time(UTC)</th>
+                <th scope="col">Block Hash</th>
+                <th scope="col">Merkle Root Hash</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in data %}
+              <tr>
+                <td>{{item.time}}</td>
+                <td>{{item.hash}}</td>
+                <td>{{item.merkle}}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <br>
+
+      <!-- <div class="row">
+
+        <div class="col">
+          <div class="card">
+            <h5 class="card-header">Bitcoin(BTC)</h5>
+            <div class="card-body">
+              <div class="card-text">
+                <h5 class="card-market">94282.89 usd</h5><br>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="card">
+            <h5 class="card-header">Ethereum(ETH)</h5>
+            <div class="card-body">
+              <div class="card-text">
+                <h5 class="card-market">3244.255 usd</h5><br>
+              </div>
+            </div>
+          </div>
+        </div> -->
+    </div>
+    </main>
+    </div>
+{% endblock content %}

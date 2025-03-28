@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Crypt Swap Price | CMC Wallet{% endblock title %}
+{% block header %}
+<link href="./css/common.css" rel="stylesheet" type="text/css">
+{% endblock header %}
+{% block content %}
+   <!-- main -->
+   <div class="swap">
+    <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4 main">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/home">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Swap Prices</li>
+        </ol>
+      </nav>
+      <h1 class="h2">Swap Prices</h1>
+      <p>Shows the current swap rate against Bitcoin.</p>
+
+      <div class="card">
+        <h5 class="card-header">Rate</h5>
+        <div class="card-body">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Symbol</th>
+                <th scope="col">USD Rate</th>
+                <th scope="col">Bitcoin Swap Rate</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in data %}
+                <tr>
+                  <th scope="row">{{item.id}}</th>
+                  <td>{{item.symbol}}</td>
+                  <td style="text-align:right;"><div class="text-end"></div>{{item.rateUsd | round(method="ceil", precision=2)}} USD</div></td>
+                  <td style="text-align:right;"><div class="text-right">{% if item.id == "bitcoin" %}-{% else %}{{item.rateBtc | round(method="ceil", precision=6)}} BTC{% endif %}</div></td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </main>
+    </div>
+{% endblock content %}

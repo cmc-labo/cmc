@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}Transaction History | CMC Wallet{% endblock title %}
+{% block header %}
+<link href="./css/common.css" rel="stylesheet" type="text/css">
+{% endblock header %}
+{% block content %}
+    <!-- main -->
+    <div class="home">
+        <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4 main">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Transaction History</li>
+            </ol>
+          </nav>
+          <h1 class="h2">Transaction History</h1><br>
+          <div class="card">
+            <h5 class="card-header">Total Balance</h5>
+            <div class="card-body">
+              <div class="card-container">
+              <div class="card-text">
+                <h5 class="card-title">{{balance}}.00 cmc</h5><br>
+                <a href="/withdrawal" class="btn">Send</a>
+              </div>
+              <div class="card-img">
+                <img width="100" height="100" src="./img/qrcode.png" alt="" /></a>
+              </div>
+              </div>
+            </div>
+          </div>
+          <br>
+
+          <div class="card">
+            <h5 class="card-header">Transaction History</h5>
+            <div class="card-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col"></th>
+                    <th scope="col">time</th>
+                    <th scope="col">sender</th>
+                    <th scope="col">receiver</th>
+                    <th scope="col">amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for item in data %}
+                  <tr>
+                    <td>{% if item.transceiver == "sender" %}<p class="s_circle">{% else %}<p class="r_circle">{% endif %}</p></td>
+                    <td>{{item.time}}</td>
+                    <td>{{item.sender}}</td>
+                    <td>{{item.receiver}}</td>
+                    <td>{% if item.transceiver == "sender" %}- {% else %}{% endif %}{{item.amount}}.00 cmc</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <br>
+
+        </main>
+        </div>
+{% endblock content %}

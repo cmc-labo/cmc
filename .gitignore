@@ -1,0 +1,10 @@
+config/peers.dat
+config/secret.pem
+!log/
+log/*.log
+!log/.gitkeep
+!static/tmp/
+static/tmp/*
+!static/tmp/.gitkeep
+target/
+.env

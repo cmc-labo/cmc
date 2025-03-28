@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block title %}Crypt Market | CMC Wallet{% endblock title %}
+{% block header %}
+<link href="./css/common.css" rel="stylesheet" type="text/css">
+{% endblock header %}
+{% block content %}
+    <!-- main -->
+    <div class="base">
+        <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4 main">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/home">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Market Prices</li>
+            </ol>
+          </nav>
+          <h1 class="h2">Market Prices</h1><br>
+          <div class="row">
+            <!--card1-->
+            <div class="col">
+              <div class="card">
+                <h5 class="card-header">Bitcoin(BTC)</h5>
+                <div class="card-body">
+                  <div class="card-text">
+                    <h5 class="card-market">{{btc_price | round(method="ceil", precision=2)}} usd</h5><br>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--card2-->
+            <div class="col">
+              <div class="card">
+                <h5 class="card-header">Ethereum(ETH)</h5>
+                <div class="card-body">
+                  <div class="card-text">
+                    <h5 class="card-market">{{eth_price | round(method="ceil", precision=2) }} usd</h5><br>
+                  </div>
+                </div>
+              </div>
+            </div>
+            </div>
+            <br>
+
+            <div class="row">
+                <!--card1-->
+                <div class="col">
+                  <div class="card">
+                    <h5 class="card-header">Solana(SOL)</h5>
+                    <div class="card-body">
+                      <div class="card-text">
+                        <h5 class="card-market">{{sol_price | round(method="ceil", precision=2)}} usd</h5><br>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!--card2-->
+                <div class="col">
+                  <div class="card">
+                    <h5 class="card-header">Cardano(ADA)</h5>
+                    <div class="card-body">
+                      <div class="card-text">
+                        <h5 class="card-market">{{ada_price | round(method="ceil", precision=2)}} usd</h5><br>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <br>
+
+            <div class="row">
+                <!--card1-->
+                <div class="col">
+                  <div class="card">
+                    <h5 class="card-header">Avalanche(AVAX)</h5>
+                    <div class="card-body">
+                      <div class="card-text">
+                        <h5 class="card-market">{{avax_price | round(method="ceil", precision=2)}} usd</h5><br>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!--card2-->
+                <div class="col">
+                    <div class="card">
+                      <h5 class="card-header">Ripple(XRP)</h5>
+                      <div class="card-body">
+                        <div class="card-text">
+                          <h5 class="card-market">{{xrp_price | round(method="ceil", precision=2)}} usd</h5><br>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+            </div>
+
+        </main>
+        </div>
+{% endblock content %}

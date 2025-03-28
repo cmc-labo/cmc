@@ -1,0 +1,70 @@
+body {
+    background-color: #5f9ea0;
+  }
+  
+  .login {
+    background-color: #fff;
+    margin: 50px auto;
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 400px;
+    height: 500px;
+  }
+
+  .login .logo {
+    margin: auto;
+    display: block;
+  }
+  .login .exo-2-logo {
+    font-family: "Exo 2", serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+  }
+  
+  .form {
+    width: 100%;
+    height: 30px;
+    margin-top: 5px;
+  }
+  
+  .submit {
+    width: 100%;
+    color: #fff;
+    background-color: #008b8b;
+    margin-top: 20px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    border: 0px;
+  }
+  
+  .submit:hover {
+    background-color: #008b8b;
+    color: #fff;
+  }
+  
+  .fs-s {
+    font-size: small;
+  }
+  
+  .error-msg {
+    color: #db7093;
+  }
+  
+  .error {
+    background-color: #5f9ea0;
+    margin: 50px auto;
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 400px;
+    height: 400px;
+  }
+  .error h1, .error h2, .error .fs-s {
+    color: #fff;
+  }
+
+  .disable {
+    background-color: #2f4f4f !important;
+  }

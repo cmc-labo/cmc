@@ -1,0 +1,126 @@
+{% extends "base_nft.html" %}
+{% block title %}NFT Transfer | CMC Wallet{% endblock title %}
+{% block header %}
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vuelidate@0.7.4/dist/validators.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vuelidate@0.7.4/dist/vuelidate.min.js"></script>
+<link href="./../css/common.css" rel="stylesheet" type="text/css">
+{% endblock header %}
+{% block content %}
+    <!-- main -->
+    <div class="base" id="app">
+    <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4 main">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/home">Home</a></li>
+            <li class="breadcrumb-item"><a href="/nft">NFTs</a></li>
+            <li class="breadcrumb-item active" aria-current="page">NFT transfer</li>
+            <li class="breadcrumb-item" >NFT create</li>
+        </ol>
+      </nav>
+      <h1 class="h2">NFT Transfer</h1><br>
+      <div class="btn-group" role="group" aria-label="">
+        <button type="button" class="btn"><a href="/nft">NFTs</a></button>
+        <button type="button" class="btn inactive">NFT Transfer</button>
+        <button type="button" class="btn"><a href="/nft_withdrawal">NFT Mint</a></button>
+      </div>
+      <br><br>
+      <form action="/nft_transfer_complete" method="post" @submit="validateBeforeSubmit">
+        <input type="hidden" name="authenticity_token" value="{{ authenticity_token }}"/>
+        <input type="hidden" name="nft_origin" value="{{ nft_obj.transaction_hash}}"/>
+
+        <div class="card">
+          <div class="card-body">
+            <div class="card-container">
+
+            <div class="flex">
+            <div class="img">
+              <img width="200px" height="200px" src="{{nft_obj.nft_data}}" alt="" /></a>
+            </div>
+
+            <ol class="list-group">
+              <li class="list-group-item d-flex justify-content-between align-items-start">
+                <div class="ms-2 me-auto">
+                  <div class="fw-bold">Created Date</div>
+                    {{nft_obj.time}}
+                </div>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-start">
+                <div class="ms-2 me-auto">
+                  <div class="fw-bold">Creator</div>
+                  {{nft_obj.sender}}
+                </div>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-start">
+                <div class="ms-2 me-auto">
+                  <div class="fw-bold">Signature</div>
+                  {{nft_obj.signature}}
+                </div>
+              </li>
+            </ol>
+            </div>
+              
+            </div>
+          </div>
+        </div>
+        <br>
+
+        <div class="mb-3">
+          <label for="withdrawal_address" class="form-label">Receipient Address</label>
+          <input type="text" class="form-control" id="withdrawal_address" name="receiver" v-model="address" @blur="$v.address.$touch()">
+          <div v-if="$v.address.$error">
+            <span v-if="!$v.address.required" class="fs-s error-msg">This is a required field.</span>
+            <span v-if="!$v.address.alphaNum" class="fs-s error-msg">The address format is incorrect. Please enter a valid wallet address.</span>
+            <span v-if="!$v.address.minLength" class="fs-s error-msg">The address format is incorrect. Please enter a valid wallet address.</span>
+            <span v-if="!$v.address.maxLength" class="fs-s error-msg">The address format is incorrect. Please enter a valid wallet address.</span>
+          </div>
+          <div id="withdrawal_addres" class="form-text">Please double-check to make sure there are no input errors.</div>
+        </div>
+        <div class="mb-3 form-check">
+          <input type="checkbox" class="form-check-input" id="Check1" v-model="confirm" @blur="$v.confirm.$touch()">
+          <label class="form-check-label" for="Check1">The recepient and content has been confirmed.</label>
+          <div v-if="$v.confirm.$error">
+            <span v-if="!$v.confirm.required" class="fs-s error-msg">Confirmation is a required field.</span>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary border-0">Send NFT</button>
+      </form>
+    </main>
+    </div>
+{% endblock content %}
+{% block script %}
+<script>
+    Vue.use(window.vuelidate.default);
+    const { required, maxLength, minLength, alphaNum } = window.validators;
+
+    const app = new Vue({
+        el: '#app',
+        data: {
+            address: '',
+            confirm: '',
+        },
+        validations: {
+            address: {
+                required,
+                alphaNum,
+                minLength: minLength(33),
+                maxLength: maxLength(34),
+            },
+            confirm: {
+              required,
+            }
+        },
+        methods: {
+            validateBeforeSubmit(e) {
+              this.$v.$touch();
+                if (this.$v.$invalid) {
+                    e.preventDefault();
+                    console.log('validation error');
+                } else {
+                    console.log('submit');
+                }
+            }
+        }
+    });
+  </script>
+{% endblock script %}  

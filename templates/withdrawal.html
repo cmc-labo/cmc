@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block title %}Crypt Withdrawal | CMC Wallet{% endblock title %}
+{% block header %}
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vuelidate@0.7.4/dist/validators.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vuelidate@0.7.4/dist/vuelidate.min.js"></script>
+<link href="./css/common.css" rel="stylesheet" type="text/css">
+{% endblock header %}
+{% block content %}
+ <!-- main -->
+    <div class="base" id="app">
+    <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4 main">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/home">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Crypto Withdrawal</li>
+        </ol>
+      </nav>
+      <h1 class="h2">Crypto Withdrawal</h1><br>
+      {% if balance == 0 %}
+      <span class="fs-s error-msg">Unable to send because your crypto balance is 0.</span><br>
+      {% endif %}
+      <br>
+      <form action="/withdrawal_complete" method="post" @submit="validateBeforeSubmit">
+        <input type="hidden" name="authenticity_token" value="{{ authenticity_token }}"/>
+        <div class="mb-3">
+          <label for="withdrawal_address" class="form-label">Withdrawal Address</label>
+          <input type="text" class="form-control" id="withdrawal_address" name="receiver" v-model="address" @blur="$v.address.$touch()">
+          <div v-if="$v.address.$error">
+            <span v-if="!$v.address.required" class="fs-s error-msg">This is a required field.</span>
+            <span v-if="!$v.address.alphaNum" class="fs-s error-msg">The address format is incorrect. Please enter a valid wallet address.</span>
+            <span v-if="!$v.address.minLength" class="fs-s error-msg">The address format is incorrect. Please enter a valid wallet address.</span>
+            <span v-if="!$v.address.maxLength" class="fs-s error-msg">The address format is incorrect. Please enter a valid wallet address.</span>
+          </div>
+          <div id="withdrawal_addres" class="form-text">Please double-check to make sure there are no input errors.</div>
+        </div>
+        <div class="mb-3">
+            <label for="customRange1" class="form-label">Request amount range</label>
+            <input type="range" class="form-range" id="customRange1" min="0" max="{{balance}}" v-model="amount">
+        </div>
+        <div class="mb-3">
+          <label for="amount" class="form-label">AMOUNT</label>
+          <input type="amount" class="form-control" id="amount" name="amount" v-model="amount" @blur="$v.amount.$touch()">
+          <div v-if="$v.amount.$error">
+            <span v-if="!$v.amount.required" class="fs-s error-msg">This is a required field.</span>
+            <span v-if="!$v.amount.numeric" class="fs-s error-msg">Accepts only numerics. Please enter numerics only.</span>
+          </div>
+        </div>
+        <div class="mb-3 form-check">
+          <input type="checkbox" class="form-check-input" id="Check1" v-model="confirm" @blur="$v.confirm.$touch()">
+          <label class="form-check-label" for="Check1">The input has been confirmed.</label>
+          <div v-if="$v.confirm.$error">
+            <span v-if="!$v.confirm.required" class="fs-s error-msg">Confirmation is a required field.</span>
+          </div>
+        </div>
+        <br>
+        {% if balance == 0 %}
+        <button type="submit" class="btn btn-primary border-0" disabled>Request withdrawal</button>
+        {% else %}
+        <button type="submit" class="btn btn-primary border-0">Request withdrawal</button>
+        {% endif %}
+      </form>
+    </main>
+    </div>
+{% endblock content %}
+{% block script %}
+<script>
+    Vue.use(window.vuelidate.default);
+    const { required, maxLength, minLength, alphaNum, numeric } = window.validators;
+    let value = "{{ balance / 4 | round(method='ceil', precision=0) }}";
+
+    const app = new Vue({
+        el: '#app',
+        data: {
+            address: '',
+            amount: value,
+            confirm: '',
+        },
+        validations: {
+            address: {
+                required,
+                alphaNum,
+                minLength: minLength(33),
+                maxLength: maxLength(34),
+            },
+            amount: {
+                required,
+                numeric,
+            },
+            confirm: {
+              required,
+            }
+        },
+        methods: {
+            validateBeforeSubmit(e) {
+              this.$v.$touch();
+                if (this.$v.$invalid) {
+                    e.preventDefault();
+                    console.log('validation error');
+                } else {
+                    console.log('submit');
+                }
+            }
+        }
+    });
+ </script>
+{% endblock script %}  

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Crypt Wallet Account | CMC Wallet{% endblock title %}
+{% block header %}
+<link href="./css/common.css" rel="stylesheet" type="text/css">
+{% endblock header %}
+{% block content %}
+    <!-- main -->
+    <div class="base">
+        <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4 main">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/home">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Account</li>
+            </ol>
+          </nav>
+          <h1 class="h2">Account</h1><br>
+          <ul class="list-group">
+            <li class="list-group-item">User Name</li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                {{username}}
+                <a href="/account_username"><span class="badge edit-badge rounded-pill">EDIT</span></a>
+            </li>
+          </ul>
+          <br>
+
+          <ul class="list-group">
+            <li class="list-group-item">Password</li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                ********
+                <a href="/account_password"><span class="badge edit-badge rounded-pill">CHANGE</span></a>
+            </li>
+          </ul>
+          <br>
+
+          <ul class="list-group">
+            <li class="list-group-item">Node</li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                {% if nodetype == "c" %}Core Node{% else %}Miner Node{% endif %}
+            </li>
+          </ul>
+          <br>
+        </main>
+        </div>
+{% endblock content %}

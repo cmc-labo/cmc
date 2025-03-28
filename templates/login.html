@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Login | CMC Wallet</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuelidate@0.7.4/dist/validators.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuelidate@0.7.4/dist/vuelidate.min.js"></script>
+    <link href="./css/login.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <div class="login" id="app">
+        <img width="39" height="39" class="logo" src="./img/logo.png" alt="" />
+        <h1 class="exo-2-logo">CMC Wallet Login</h1>
+        <form method="POST" action="/auth_login" @submit="validateBeforeSubmit">
+          <input type="hidden" name="authenticity_token" value="{{ authenticity_token }}"/>
+          <div class="mb-3 mt-3">
+          <input type="text" name="username" class="form-control" placeholder="user name" v-model="username" @blur="$v.username.$touch()">
+          <div v-if="$v.username.$error">
+            <span v-if="!$v.username.required" class="fs-s error-msg">This is a required field.</span>
+            <span v-if="!$v.username.alphaNum" class="fs-s error-msg">Please enter alphanumeric characters only.</span>
+            <span v-if="!$v.username.minLength" class="fs-s error-msg">Please enter at least 6 characters.</span>
+            <span v-if="!$v.username.maxLength" class="fs-s error-msg">Please enter less than 20 characters.</span>
+          </div>
+          </div>
+          <input type="password" name="password" class="form-control" placeholder="password" v-model="password" @blur="$v.password.$touch()">
+          <div v-if="$v.password.$error">
+            <span v-if="!$v.password.required" class="fs-s error-msg">This is a required field.</span>
+            <span v-if="!$v.password.alphaNum" class="fs-s error-msg">Please enter alphanumeric characters only.</span>
+            <span v-if="!$v.password.minLength" class="fs-s error-msg">Please enter at least 8 characters.</span>
+            <span v-if="!$v.password.maxLength" class="fs-s error-msg">Please enter less than 25 characters.</span>
+          </div>
+          <span class="fs-s">If you don't have account, you can <a href="/signup">Sign up</a>.</span><br>
+          <input type="submit" class="btn submit" value="login" />
+        </form>
+        
+    </div>
+    <script>
+      Vue.use(window.vuelidate.default);
+      const { required, maxLength, minLength, alphaNum } = window.validators;
+  
+      const app = new Vue({
+          el: '#app',
+          data: {
+              username: '',
+              password: '',
+          },
+          validations: {
+              username: {
+                  required,
+                  alphaNum,
+                  minLength: minLength(6),
+                  maxLength: maxLength(20),
+              },
+              password: {
+                required,
+                  alphaNum,
+                  minLength: minLength(8),
+                  maxLength: maxLength(25),
+              }
+          },
+          methods: {
+              validateBeforeSubmit(e) {
+                this.$v.$touch();
+                  if (this.$v.$invalid) {
+                      e.preventDefault();
+                      console.log('validation error');
+                  } else {
+                      console.log('submit');
+                  }
+              }
+          }
+      });
+   </script>
+  </body>
+</html>

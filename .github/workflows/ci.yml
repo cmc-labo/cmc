@@ -1,0 +1,22 @@
+name: GitHub Actions CI
+run-name: Testing out 🚀
+on: [push]
+jobs:
+  GitHub-Actions-Check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - name: List files in the repository
+        run: |
+          ls
+      - name: Build
+        run: |
+          cargo build
+      - name: Test
+        run: |
+          cargo test
+      - name: Clippy
+        run: |
+          rustup component add clippy
+          cargo clippy
