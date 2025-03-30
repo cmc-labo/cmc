@@ -86,7 +86,7 @@ Once the postgres installation is complete, change the postgres password as stat
 ## **3. Download the source code.**
 
 ```bash
-$ git clone https://github.com/hpscript/cmc.git
+$ git clone https://github.com/cmc-labo/cmc
 $ cd cmc
 ```
 
