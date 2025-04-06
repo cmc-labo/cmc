@@ -641,7 +641,7 @@ mod tests {
         transactions.push(signed_transaction1);
         transactions.push(signed_transaction2);
         transactions.push(signed_transaction3);
-        let block1 = kernel::Block {version:"".to_string(), time: utc_datetime, transactions: transactions, hash: "".to_string(), nonce: "".to_string(), merkle: "".to_string(), miner:"".to_string(), validator: "".to_string(), op: "".to_string()};
+        let block1 = kernel::Block {height: 1, version:"".to_string(), time: utc_datetime, transactions: transactions, hash: "".to_string(), nonce: "".to_string(), merkle: "".to_string(), miner:"".to_string(), validator: "".to_string(), op: "".to_string()};
         let mut blocks: VecDeque<kernel::Block> = VecDeque::new();
         blocks.push_back(block1);
 

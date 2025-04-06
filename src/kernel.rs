@@ -69,6 +69,7 @@ pub struct SignedTransaction {
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq)]
 pub struct Block {
+    pub height: u32,
     pub version: String,
     pub time: DateTime<Utc>,
     pub transactions: Vec<SignedTransaction>,
@@ -368,11 +369,14 @@ async fn proof_of_work() -> Result<Block>{
     }
     info!("Miner: {}, Validator: {}", miner, validator);
 
+    // block height
+    let new_height = param.height + 1;
+
     // wallet address for reward receiving
     let address = address::get_address().unwrap();
 
     // make new block
-    let new_block = Block{version: conf::VERSION.to_string(), time: Utc::now(), transactions: objs.to_vec(), hash: hex::encode(header).to_string(), nonce: num.to_string(), merkle: merkle_root, miner: miner.to_string(), validator: validator.to_string(), op: address.address.to_string()};
+    let new_block = Block{height: new_height, version: conf::VERSION.to_string(), time: Utc::now(), transactions: objs.to_vec(), hash: hex::encode(header).to_string(), nonce: num.to_string(), merkle: merkle_root, miner: miner.to_string(), validator: validator.to_string(), op: address.address.to_string()};
     println!("{:?}", new_block);
     Ok(new_block)
 }
@@ -874,7 +878,7 @@ mod tests {
     #[tokio::test]
     async fn test_broadcast_new_block() {
         let address = address::get_address().unwrap();
-        let new_block = Block {version: "1.0.0".to_string(), time: Utc::now(), transactions: [].to_vec(), hash: "0000bdebe741af3994f4a2160b4480a23ca137aaf0ac51b10fe574f04afc7be4".to_string(), nonce: "70736".to_string(), merkle: "34ECB4DF98".to_string(), miner:"MTkyLjE2OC4zMy4xMA==".to_string(), validator:"MTkyLjE2OC4zMy4xMA==".to_string(), op:address.address.to_string()};
+        let new_block = Block {height: 1, version: "1.0.0".to_string(), time: Utc::now(), transactions: [].to_vec(), hash: "0000bdebe741af3994f4a2160b4480a23ca137aaf0ac51b10fe574f04afc7be4".to_string(), nonce: "70736".to_string(), merkle: "34ECB4DF98".to_string(), miner:"MTkyLjE2OC4zMy4xMA==".to_string(), validator:"MTkyLjE2OC4zMy4xMA==".to_string(), op:address.address.to_string()};
         let block_serialized = serde_json::json!(&new_block);
         let client = reqwest::Client::new();
         let resp = client.post("http://httpbin.org/post")
@@ -895,7 +899,7 @@ mod tests {
     #[tokio::test]
     async fn test_pow_check() {
         let address = address::get_address().unwrap();
-        let new_block = Block {version: "1.0.0".to_string(), time: Utc::now(), transactions: [].to_vec(), hash: "0000bdebe741af3994f4a2160b4480a23ca137aaf0ac51b10fe574f04afc7be4".to_string(), nonce: "00000".to_string(), merkle: "34ECB4DF98".to_string(), miner:"MTkyLjE2OC4zMy4xMA==".to_string(), validator:"MTkyLjE2OC4zMy4xMA==".to_string(), op:address.address.to_string()};
+        let new_block = Block {height: 1, version: "1.0.0".to_string(), time: Utc::now(), transactions: [].to_vec(), hash: "0000bdebe741af3994f4a2160b4480a23ca137aaf0ac51b10fe574f04afc7be4".to_string(), nonce: "00000".to_string(), merkle: "34ECB4DF98".to_string(), miner:"MTkyLjE2OC4zMy4xMA==".to_string(), validator:"MTkyLjE2OC4zMy4xMA==".to_string(), op:address.address.to_string()};
         let result = pow_check(new_block).await.unwrap();
         assert_eq!(result, false);
     }
@@ -903,7 +907,7 @@ mod tests {
     #[test]
     fn test_block_override() {
         let address = address::get_address().unwrap();
-        let new_block = Block {version: "1.0.0".to_string(), time: Utc::now(), transactions: [].to_vec(), hash: "0000bdebe741af3994f4a2160b4480a23ca137aaf0ac51b10fe574f04afc7be4".to_string(), nonce: "00000".to_string(), merkle: "34ECB4DF98".to_string(), miner:"MTkyLjE2OC4zMy4xMA==".to_string(), validator:"MTkyLjE2OC4zMy4xMA==".to_string(), op:address.address.to_string()};
+        let new_block = Block {height: 1, version: "1.0.0".to_string(), time: Utc::now(), transactions: [].to_vec(), hash: "0000bdebe741af3994f4a2160b4480a23ca137aaf0ac51b10fe574f04afc7be4".to_string(), nonce: "00000".to_string(), merkle: "34ECB4DF98".to_string(), miner:"MTkyLjE2OC4zMy4xMA==".to_string(), validator:"MTkyLjE2OC4zMy4xMA==".to_string(), op:address.address.to_string()};
         let tmp_path = "./static/tmp/tmp_block_override_test.txt".to_string();
 
         // file create
@@ -935,7 +939,7 @@ mod tests {
     #[tokio::test]
     async fn test_create_coinbase_transaction() {
         let address = address::get_address().unwrap();
-        let new_block = Block {version: "1.0.0".to_string(), time: Utc::now(), transactions: [].to_vec(), hash: "0000bdebe741af3994f4a2160b4480a23ca137aaf0ac51b10fe574f04afc7be4".to_string(), nonce: "00000".to_string(), merkle: "34ECB4DF98".to_string(), miner:"MTkyLjE2OC4zMy4xMA==".to_string(), validator:"MTkyLjE2OC4zMy4xMA==".to_string(), op:address.address.to_string()};
+        let new_block = Block {height: 1, version: "1.0.0".to_string(), time: Utc::now(), transactions: [].to_vec(), hash: "0000bdebe741af3994f4a2160b4480a23ca137aaf0ac51b10fe574f04afc7be4".to_string(), nonce: "00000".to_string(), merkle: "34ECB4DF98".to_string(), miner:"MTkyLjE2OC4zMy4xMA==".to_string(), validator:"MTkyLjE2OC4zMy4xMA==".to_string(), op:address.address.to_string()};
         let coinbase_transaction = create_coinbase_transaction(new_block).await.unwrap();
         assert_eq!(crypt::verify_signature(&coinbase_transaction).await.unwrap(), true);
     }
@@ -956,7 +960,7 @@ mod tests {
         let mut transactions: Vec<SignedTransaction> = Vec::new();
         transactions.push(signed_transaction1);
         transactions.push(signed_transaction2);
-        let block = Block {version:"".to_string(), time: utc_datetime, transactions: transactions, hash: "".to_string(), nonce: "".to_string(), merkle: "".to_string(), miner:"".to_string(), validator: "".to_string(), op: "".to_string()};
+        let block = Block {height: 1, version:"".to_string(), time: utc_datetime, transactions: transactions, hash: "".to_string(), nonce: "".to_string(), merkle: "".to_string(), miner:"".to_string(), validator: "".to_string(), op: "".to_string()};
 
         let objs = processing_mutex_vector(block).await;
         conf::POOL.lock().unwrap().clear();
